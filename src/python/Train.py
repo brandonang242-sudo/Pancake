@@ -1,5 +1,28 @@
-from transformers import Trainer, TrainingArguments
+from transformers import AutoModelForSequenceClassification, Trainer, TrainingArguments
+import torch
+from Dataset import load_tokenized_dataset
+from Head import create_classifier
 
+NUM_CLASSES = 256
+
+# Load dataset
+tokenized_datasets = load_tokenized_dataset()
+
+# Load GPT-2 model
+model = AutoModelForSequenceClassification.from_pretrained(
+    "distilgpt2",
+    num_labels=NUM_CLASSES
+)
+model.config.pad_token_id = model.config.eos_token
+
+# Add custom classifier head
+model = create_classifier(model, model.config.hidden_size, NUM_CLASSES)
+
+# Use CPU
+device = "cpu"
+model.to(device)
+
+# Training arguments
 training_args = TrainingArguments(
     output_dir="./results",
     learning_rate=2e-5,
