@@ -30,8 +30,7 @@ training_args = TrainingArguments(
     gradient_accumulation_steps=4,
     num_train_epochs=3,
     logging_steps=10,
-    save_steps=50,
-    evaluation_strategy="steps"
+    save_steps=50
 )
 
 trainer = Trainer(
