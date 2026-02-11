@@ -2,3 +2,4 @@ torch
 transformers
 datasets
 pandas
+accelerate>=1.1.0
