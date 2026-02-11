@@ -3,9 +3,13 @@ from transformers import Trainer, TrainingArguments
 training_args = TrainingArguments(
     output_dir="./results",
     learning_rate=2e-5,
-    per_device_train_batch_size=8,
-    num_train_epochs=10,
+    per_device_train_batch_size=1,  
+    gradient_accumulation_steps=8,  
+    num_train_epochs=3,             
     weight_decay=0.01,
+    logging_steps=10,
+    save_steps=50,
+    evaluation_strategy="steps"
 )
 
 trainer = Trainer(
@@ -15,4 +19,5 @@ trainer = Trainer(
     eval_dataset=tokenized_datasets["test"],
 )
 
+# Train on CPU
 trainer.train()
