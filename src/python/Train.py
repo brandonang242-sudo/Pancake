@@ -13,7 +13,7 @@ model = AutoModelForSequenceClassification.from_pretrained(
     "distilgpt2",
     num_labels=NUM_CLASSES
 )
-model.config.pad_token_id = model.config.eos_token
+model.config.pad_token_id = model.config.eos_token_id
 
 # Add custom classifier head
 model = create_classifier(model, model.config.hidden_size, NUM_CLASSES)
