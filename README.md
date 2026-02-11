@@ -1,0 +1,3 @@
+# Pancake
+
+Pancake is an AGI model that learns and adapts, so it won't make a mistake in some stuff...
