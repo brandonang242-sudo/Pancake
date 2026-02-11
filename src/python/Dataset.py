@@ -22,6 +22,8 @@ def tokenize_function(examples):
     )
 
 tokenized_datasets = dataset.map(tokenize_function, batched=True)
+tokenized_datasets = tokenized_datasets.remove_columns(["text"])
+tokenized_datasets.set_format("torch")  # outputs PyTorch tensors
 
 # Load smaller GPT-2 for classification
 NUM_LABELS = 1024
