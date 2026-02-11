@@ -1,22 +1,26 @@
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 from torch import nn
+from transformers import AutoModelForSequenceClassification
 
 NUM_LABELS = 1024
-MAX_LENGTH = 256  # long enough to capture context, not too long for CPU
 
-tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
-tokenizer.pad_token = tokenizer.eos_token
-
+# Load smaller GPT-2
 model = AutoModelForSequenceClassification.from_pretrained(
     "distilgpt2",
     num_labels=NUM_LABELS
 )
+
+# Fix pad token
 model.config.pad_token_id = model.config.eos_token_id
 
+# Smarter classifier with hidden layer
 model.classifier = nn.Sequential(
-    nn.Linear(model.config.hidden_size, 1024),
+    nn.Linear(model.config.hidden_size, 1024),  # hidden layer
     nn.ReLU(),
     nn.Dropout(0.1),
     nn.Linear(1024, NUM_LABELS)
 )
+
+# Use CPU
+device = "cpu"
+model.to(device)
